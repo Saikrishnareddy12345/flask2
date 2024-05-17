@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-ingress
+  namespace: flask
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: flask-ingress
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'  # Add 443 port
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:ap-south-1:905418365519:certificate/4273d2bd-b802-4901-9f5c-1111cdf0a406"  # Replace with your ACM certificate ARN
+    alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-2016-08"  # Replace with your desired SSL policy
+spec:
+  ingressClassName: alb
+  defaultBackend:
+    service:
+      name: flask-service
+      port:
+        number: 80  # Updated port definition format to use map
+  rules:
+    - host: flask.saikrishnareddy.life
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: flask-service
+                port:
+                  number: 80  # Updated port definition format to use map
+

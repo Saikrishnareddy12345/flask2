@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-configmap
+  namespace: flask
+data:
+  ###Database name: sai_db
+  database-name: sai_db
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: database-secret
+  namespace: flask
+type: Opaque
+data:
+  ####UserName is root
+  db-username: cm9vdA==
+    ###Password is Saikrishna_prod
+  db-password: U2Fpa3Jpc2huYV9wcm9k
+
